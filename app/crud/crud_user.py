@@ -12,12 +12,13 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         通过id获取用户
     '''
 
-    # def get_by_uid(
-    #         self,
-    #         db: Session,
-    #         uid: str
-    # ) -> Optional[User]:
-    #     return db.query(User).filter(User.uid == uid).first()
+    def get_by_uid(
+            self,
+            *,
+            db: Session,
+            name: str
+    ) -> Optional[User]:
+        return db.query(users.User).filter(users.User.name == name).first()
 
     '''
         注册时使用
