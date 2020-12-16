@@ -2,26 +2,28 @@ from sqlalchemy.orm import Session
 from app.crud.base import CRUDBase
 from app.schemas.user import User, UserCreate, UserUpdate
 from typing import Optional, Dict, Union, Any
-from app.core.security import verify_password, get_password_hash
+from app.core.security import password_hash, vertify_password
 
-from app.models import user
+from app.models import users
 
 
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
-
     '''
         通过id获取用户
     '''
+
     def get_by_uid(
             self,
+            *,
             db: Session,
-            uid: str
+            name: str
     ) -> Optional[User]:
-        return db.query(User).filter(User.uid == uid).first()
+        return db.query(users.User).filter(users.User.name == name).first()
 
     '''
         注册时使用
     '''
+
     def create(
             self,
             db: Session,
@@ -41,6 +43,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     '''
         更新
     '''
+
     def update(
             self,
             db: Session,
@@ -52,26 +55,29 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         else:
             update_data = obj_in.dict(exclude_unset=True)
         if update_data["password"]:
-            hashed_password = get_password_hash(update_data["password"])
+            hashed_password = password_hash(update_data["password"])
             del update_data["password"]
             update_data["hashed_password"] = hashed_password
         return super().update(db, db_obj=db_obj, obj_in=update_data)
-
     '''
         验证用户登录
     '''
+
     @classmethod
     def authenticate(
             self,
+            user_name: str,
             db: Session,
-            name: str,
             password: str,
     ) -> Optional[User]:
-        users = db.query(user.User).filter(
-            user.User.name == name
+        user = db.query(users.User).filter(
+            users.User.name == user_name
         ).first()
-        if not users:
+        if not user:
             return None
-        if not verify_password(password,  hashed_password):
+        if not vertify_password(password, user.password):
             return None
-        return users
+        return user
+
+
+user = CRUDUser(users.User)
