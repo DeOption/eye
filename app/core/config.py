@@ -2,12 +2,11 @@ from pydantic import BaseSettings
 
 
 class Setting(BaseSettings):
-
     # 路由
     API_V1_STR: str = "/app/v1"
 
     # 密钥，由MD5加密生成
-    SECRET_KEY: str = None
+    SECRET_KEY: str = 'heida'
 
     # 过期时间
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1800

@@ -1,4 +1,3 @@
-
 from sqlalchemy import Column, Integer, VARCHAR
 
 from app.sqlDB.base_class import Base

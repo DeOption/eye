@@ -1,49 +1,48 @@
 from typing import Any
-
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic.datetime_parse import timedelta
 from sqlalchemy.orm import Session
 from app.crud import crud_user
-
 from app.core import security
 from app.core.config import setting
 from app.api import deps
+from app.schemas.token import Token
 
 
 
 router = APIRouter()
 
 
-@router.post("/login/access-token", summary="用户登录认证")
-def login_access_token(
+@router.post('/user_login', response_model=Token, summary="用户登录认证")
+def login(
         *,
         db: Session = Depends(deps.get_db),
-        form_data: OAuth2PasswordRequestForm = Depends(),
-) -> Any:
+        from_data: OAuth2PasswordRequestForm = Depends(OAuth2PasswordRequestForm)
+) -> dict:
     """
         用户JWT登录
         :param db:
         :param user_info:
         :return:
     """
-    # 验证用户
     user = crud_user.CRUDUser.authenticate(
         db=db,
-        name=form_data.username,
-        password=form_data.password,
+        user_name=from_data.username,
+        password=from_data.password
     )
     if not user:
-        raise HTTPException(status_code=401, detail="Incorrect email or password")
-    # 查看token有无过期
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="用户名或密码有误"
+        )
     access_token_expires = timedelta(minutes=setting.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
         "access_token": security.create_access_token(
-            user.id, expires_delta=access_token_expires
+            user.uid, expires_delta=access_token_expires
         ),
         "token_type": "bearer",
     }
-
 
 
 '''
