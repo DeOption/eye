@@ -12,7 +12,7 @@ from app.schemas.token import Token
 router = APIRouter()
 
 
-@router.post('/user_login', summary="用户登录认证")
+@router.post('/user_login', summary="用户登录")
 def login(
         *,
         db: Session = Depends(deps.get_db),
