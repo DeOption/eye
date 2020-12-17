@@ -48,13 +48,3 @@ def login(
             "uid": crud_user.user.get_by_uid(db=db, name=form_data.username).uid
         }
     }
-
-
-'''
-@router.post("/login/test-token", summary="测试登录认证")
-def test_token(current_user: models.user = Depends(deps.get_current_user)) -> Any:
-    """
-    Test access token
-    """
-    return current_user
-'''

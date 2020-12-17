@@ -21,6 +21,18 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     ) -> Optional[User]:
         return db.query(users.User).filter(users.User.name == name).first()
 
+
+    '''
+        通过id获取用户信息
+    '''
+    def getUser(
+            self,
+            db: Session,
+            uid: str
+    ) -> User:
+        return db.query(users.User).filter(users.User.uid == uid).first()
+
+
     '''
         注册时使用
     '''

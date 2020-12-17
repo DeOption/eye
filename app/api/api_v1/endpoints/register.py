@@ -13,7 +13,7 @@ def register(
         db: Session = Depends(deps.get_db),
         name: Optional[str] = Body(..., description='用户名'),
         password: Optional[str] = Body(..., description='密码'),
-        email: Optional[str] = Body(..., description='Email'),
+        email: Optional[str] = Body(..., description='邮箱'),
         phone: Optional[str] = Body(..., description='手机号')
 ) -> dict:
     """
