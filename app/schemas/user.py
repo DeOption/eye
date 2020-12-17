@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class UserBase(BaseModel):
     email: Optional[str] = None
-    phone: int = None
+    phone: str = None
 
 
 class UserAuth(BaseModel):
@@ -17,7 +17,7 @@ class UserCreate(UserBase):
     name: str
     email: str
     password: str
-    permission: int
+    # permission: int
 
 # Properties to receive via API on update
 class UserUpdate(UserBase):

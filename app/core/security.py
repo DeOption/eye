@@ -33,7 +33,7 @@ def password_hash(login_password: str) -> str:
     :param password:
     :return:
     """
-    login_password = bytes(login_password, encoding='utf-8')
+    # login_password = bytes(login_password)
     setting.SECRET_KEY = md5(login_password)
     return md5(login_password)
 

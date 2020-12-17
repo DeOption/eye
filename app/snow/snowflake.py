@@ -93,6 +93,8 @@ class IdWorker(object):
         return timestamp
 
 
+worker = IdWorker(1, 2, 0)
+
 if __name__ == '__main__':
     worker = IdWorker(1, 2, 0)
     print(worker.get_id())

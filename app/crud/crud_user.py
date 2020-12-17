@@ -1,11 +1,12 @@
 from sqlalchemy.orm import Session
 from app.crud.base import CRUDBase
-from app.schemas.user import User, UserCreate, UserUpdate
+from app.schemas.user import UserCreate, UserUpdate
+from app.models.users import User
 from typing import Optional, Dict, Union, Any
 from app.core.security import password_hash, vertify_password
-
+from app.snow.snowflake import worker
 from app.models import users
-
+from app.core import security
 
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     '''
@@ -24,17 +25,23 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         注册时使用
     '''
 
-    def create(
+    def add(
             self,
             db: Session,
-            obj_in: UserCreate
+            name: str,
+            password: str,
+            email: str,
+            phone: str
     ) -> User:
+        uid = worker.get_id()
+        password=security.password_hash(password)
         db_obj = User(
-            name=obj_in.name,
-            password=obj_in.password,
-            email=obj_in.email,
-            phone=obj_in.phone,
-            permission=obj_in.permission
+            uid=uid,
+            name=name,
+            password=password,
+            email=email,
+            phone=phone,
+            permission=1
         )
         db.add(db_obj)
         db.commit()
