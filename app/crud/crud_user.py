@@ -8,7 +8,9 @@ from app.snow.snowflake import worker
 from app.models import users
 from app.core import security
 
+
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
+
     '''
         通过id获取用户
     '''

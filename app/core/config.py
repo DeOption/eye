@@ -14,7 +14,7 @@ class Setting(BaseSettings):
     # 数据库连接
     HOSTNAME: str = '59.110.53.228'
     PORT: str = '3306'
-    DATABASE: str = 'db_test'
+    DATABASE: str = 'db_test2'
     USERNAME: str = 'root'
     PASSWORD: str = 'root'
     DB_URI: str = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.format(USERNAME, PASSWORD, HOSTNAME, PORT, DATABASE)
