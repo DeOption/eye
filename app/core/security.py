@@ -11,10 +11,10 @@ def create_access_token(
         subject: Union[str, Any], expires_delta: timedelta = None
 ) -> str:
     """
-        # 生成token
-        :param subject: 保存到token的值
-        :param expires_delta: 过期时间
-        :return:
+    # 生成token
+    :param subject: 保存到token的值
+    :param expires_delta: 过期时间
+    :return:
     """
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
