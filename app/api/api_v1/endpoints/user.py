@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from app.api import deps
 from typing import Optional
 from app.crud import crud_user
+from app.api.deps import get_current_user
+from app.models.users import User
+
 router = APIRouter()
 
 
@@ -10,6 +13,7 @@ router = APIRouter()
 def userInfo(
         db: Session = Depends(deps.get_db),
         uid: Optional[str] = Query(None, description='用户id'),
+        current_user: Optional[User] = Depends(get_current_user)
 ) -> dict:
     """
     :param db:

@@ -33,16 +33,9 @@ def login(
             detail="用户名或密码有误"
         )
     access_token_expires = timedelta(minutes=setting.ACCESS_TOKEN_EXPIRE_MINUTES)
-
     return {
-        "token": {
-            "access_token": security.create_access_token(
-                user.uid, expires_delta=access_token_expires
-            ),
-            "token_type": "bearer",
-        },
-        "msg": {
-            "return_msg": "OK",
-            "uid": crud_user.user.get_by_uid(db=db, name=form_data.username).uid
-        }
+        "access_token": security.create_access_token(
+            user.uid, expires_delta=access_token_expires
+        ),
+        "token_type": "bearer",
     }
