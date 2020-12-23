@@ -11,4 +11,4 @@ class ExaminationNv(Base):
     left = Column(VARCHAR(10), nullable=False, comment="裸左眼视力")
     right = Column(VARCHAR(10), nullable=False, comment="裸右眼视力")
 
-    baseinfo = relationship("BaseInfo", back_populates='examinationNv')
+    baseInfo = relationship("BaseInfo", back_populates='examinationNv')

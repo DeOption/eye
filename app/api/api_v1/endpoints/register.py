@@ -30,6 +30,7 @@ def register(
         )
     try:
         user.add(db=db, name=name, password=password, email=email, phone=phone)
+        pass
     except Exception as e:
         print(e)
         raise HTTPException(

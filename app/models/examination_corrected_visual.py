@@ -12,4 +12,4 @@ class ExaminationCorrectedVisual(Base):
     left = Column(VARCHAR(10), nullable=False, comment="左眼矫正视力")
     right = Column(VARCHAR(10), nullable=False, comment="右眼矫正视力")
 
-    baseinfo = relationship("BaseInfo", back_populates='examinationCorrectedVisual')
+    baseInfo = relationship("BaseInfo", back_populates='examinationCorrectedVisual')
