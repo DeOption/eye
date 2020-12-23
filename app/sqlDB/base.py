@@ -18,3 +18,4 @@ from app.models.leave_hospital_lts import LeaveHospitalLts
 from app.models.leave_hospital_slj import LeaveHospitalSlj
 from app.models.medical_history import MedicalHistory
 from app.models.surgery import Surgery
+from app.models.examination_lts import ExaminationLts

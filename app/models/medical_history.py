@@ -13,9 +13,9 @@ class MedicalHistory(Base):
     amblyopia_history = Column(Boolean, nullable=False, comment="弱视治疗")
     home_history = Column(Boolean, nullable=False, comment="家族史")
     born_history = Column(Boolean, nullable=False, comment="生产史")
-    surgery_history_edit = Column(Text, nullable=False, comment="手术史补充mow_age")
-    mow_age = Column(Integer, nullable=False, comment="斜视年龄")
+    surgery_history_edit = Column(Text, nullable=False, comment="手术史补充")
+    now_age = Column(Integer, nullable=False, comment="斜视年龄")
     now_wt = Column(Boolean, nullable=False, comment="歪头")
     now_fs = Column(Boolean, nullable=False, comment="复视")
 
-    baseinfo = relationship("BaseInfo", back_populates='medicalHistory')
+    baseInfo = relationship("BaseInfo", back_populates='medicalHistory')
