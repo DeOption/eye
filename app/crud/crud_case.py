@@ -2,6 +2,7 @@ from typing import Any
 from sqlalchemy.orm import Session
 from app.crud.base import CRUDBase
 from app.models.base_info import BaseInfo
+from app.models.examination_lts import ExaminationLts
 from fastapi.encoders import jsonable_encoder
 import datetime
 
@@ -63,6 +64,43 @@ class CRUDCase(CRUDBase[None, BaseInfo, None]):
         db.add(db_obj)
         db.commit()
         return db_obj
+
+    def getCaseByLts(
+            self,
+            db: Session,
+            examination_lts_j: str,
+            examination_lts_y: str
+    ):
+        """
+        检索：通过立体视
+        :param examination_lts_y:
+        :param examination_lts_j:
+        :param db:数据库连接对象
+        :return: 根据条件获取病例信息
+        """
+        examination_lts_j = db.query(
+            BaseInfo.user_name,
+            BaseInfo.age,
+            BaseInfo.create_time,
+            BaseInfo.modify_time,
+            ExaminationLts.examination_lts_j,
+            ExaminationLts.examination_lts_y, ).filter(ExaminationLts.examination_lts_j == examination_lts_j,
+                                                       ExaminationLts.base_info_id == BaseInfo.id).all()
+
+        examination_lts_y = db.query(
+            BaseInfo.user_name,
+            BaseInfo.age,
+            BaseInfo.create_time,
+            BaseInfo.modify_time,
+            ExaminationLts.examination_lts_j,
+            ExaminationLts.examination_lts_y).filter(ExaminationLts.examination_lts_y == examination_lts_y,
+                                                     ExaminationLts.base_info_id == BaseInfo.id).all()
+
+        if examination_lts_j:
+            return examination_lts_j
+
+        if examination_lts_y:
+            return examination_lts_y
 
 
 

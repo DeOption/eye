@@ -143,6 +143,24 @@ def submitCaseContent(
         )
     return {"return_msg": "OK"}
 
+@router.get("/get_case_by_lts", summary="条件检索")
+def getCaseByLTS(
+        db: Session = Depends(deps.get_db),
+        examination_lts_j: Optional[str] = Query(None, description='近方立体视'),
+        examination_lts_y: Optional[str] = Query(None, description="远方立体视"),
+) -> dict:
+    getLtsList = crud_case.case.getCaseByLts(db=db, examination_lts_j=examination_lts_j, examination_lts_y=examination_lts_y)
+    if not getLtsList:
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail="没有此病例！"
+        )
+
+    return {
+        "return_msg": "OK",
+        "getLtsList": getLtsList,
+    }
+
 if __name__ == '__main__':
     id = worker.get_id()
     print(id)
