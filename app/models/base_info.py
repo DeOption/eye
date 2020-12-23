@@ -1,7 +1,25 @@
 from sqlalchemy import Column, VARCHAR, DateTime, Text
 from sqlalchemy.orm import relationship
-
 from app.sqlDB.base_class import Base
+from app.models.medical_history import MedicalHistory
+from app.models.examination_cornea import ExaminationCornea
+from app.models.examination_nv import ExaminationNv
+from app.models.examination_corrected_visual import ExaminationCorrectedVisual
+from app.models.examination_co import ExaminationCo
+from app.models.examination_ro import ExaminationRo
+from app.models.examination_tsj import ExaminationTsj
+from app.models.examination_control import ExaminationControl
+from app.models.examination_cornea import ExaminationCornea
+from app.models.examination_slj import ExaminationSlj
+from app.models.examination_lts import ExaminationLts
+from app.models.leave_hospital_eyeballsport import LeaveHospitalEyeballsport
+from app.models.diagnosis import Diagnosis
+from app.models.surgery import Surgery
+from app.models.leave_hospital_cornea import LeaveHospitalCornea
+from app.models.leave_hospital_lts import LeaveHospitalLts
+from app.models.leave_hospital_slj import LeaveHospitalSlj
+from app.models.examination_eyeballsport import ExaminationEyeballsport
+from app.models.diagnosis_strabismus_type_internal import DiagnosisStrabismusTypeInternal
 
 class BaseInfo(Base):
     __tablename__ = 'base_info'
@@ -31,10 +49,10 @@ class BaseInfo(Base):
     examinationCornea = relationship("ExaminationCornea", back_populates='baseInfo', cascade='all, delete, delete-orphan')
     examinationSlj = relationship("ExaminationSlj", back_populates='baseInfo', cascade='all, delete, delete-orphan')
     examinationEyeballsport = relationship("ExaminationEyeballsport", back_populates='baseInfo', cascade='all, delete, delete-orphan')
-
+    #
     diagnosis1 = relationship("Diagnosis", back_populates='baseInfo', cascade='all, delete, delete-orphan')
     surgery1 = relationship("Surgery", back_populates='baseInfo', cascade='all, delete, delete-orphan')
     leaveHospitalLts = relationship("LeaveHospitalLts", back_populates='baseInfo', cascade='all, delete, delete-orphan')
     leaveHospitalCornea = relationship("LeaveHospitalCornea", back_populates='baseInfo', cascade='all, delete, delete-orphan')
     leaveHospitalSlj = relationship("LeaveHospitalSlj", back_populates='baseInfo', cascade='all, delete, delete-orphan')
-    leaveHospitalEyeballsport = relationship("leaveHospitalSlj", back_populates='baseInfo', cascade='all, delete, delete-orphan')
+    leaveHospitalEyeballsport = relationship("LeaveHospitalEyeballsport", back_populates='baseInfo', cascade='all, delete, delete-orphan')
