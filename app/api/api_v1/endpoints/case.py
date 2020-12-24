@@ -29,7 +29,7 @@ def getCaseList(
     """
     if id_number:
         caselist = crud_case.case.getCaseLists(db=db, id_number=id_number, size=size, offset=offset)
-        if not caselist:
+        if not caselist[0]:
             raise HTTPException(
                 status.HTTP_404_NOT_FOUND,
                 detail="没有此病例！"
@@ -38,8 +38,8 @@ def getCaseList(
         caselist = crud_case.case.getAllCaseLists(db=db, size=size, offset=offset)
     return {
         "return_msg": "OK",
-        "case_list": caselist,
-        "total": len(caselist)
+        "case_list": caselist[0],
+        "total": len(caselist[1])
     }
 
 
@@ -111,7 +111,6 @@ def submitCaseContent(
             {眼别，正常，外直肌，内直肌，上直肌，下直肌，上斜肌，下斜肌}\n
     :return: 提交成功返回200/ok
     """
-
     try:
         id = worker.get_id() #病例id
         crud_case.case.createBaseInfo(db=db, id=id, data=base_info)
@@ -155,11 +154,31 @@ def getCaseByLTS(
             status.HTTP_404_NOT_FOUND,
             detail="没有此病例！"
         )
-
     return {
         "return_msg": "OK",
         "getLtsList": getLtsList,
     }
+
+@router.get('/get_case_detail', summary="获取病例详情")
+def getCaseDetail(
+        db: Session = Depends(deps.get_db),
+        id_number: Optional[str] = Query(None, description='患者身份证号'),
+        size: Optional[int] = Query(None, description="页面大小"),
+        offset: Optional[int] = Query(None, description="当前页码")
+) -> dict:
+    """
+    根据病人身份证号获取病例详情\n
+    :param db: 数据库连接对象\n
+    :param id_number: 患者身份证号\n
+    :return: \n
+    """
+    patient = crud_case.case.getCaseDetail(db=db, id_number=id_number, size=size, offset=offset)
+
+    return {
+        "case_data": patient[0],
+        "total": len(patient[1])
+    }
+
 
 if __name__ == '__main__':
     id = worker.get_id()
