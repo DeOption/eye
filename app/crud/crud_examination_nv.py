@@ -28,6 +28,15 @@ class CRUDExaminationNv(CRUDBase[None, ExaminationNv, None]):
         )
         db.add(db_obj)
         db.commit()
+        db.close()
         return db_obj
+
+    def updateExaminationNv(self, db: Session, id: str, data: dict) -> Any:
+        """修改裸眼视力"""
+        data = jsonable_encoder(data)
+        db.query(ExaminationNv).filter(ExaminationNv.base_info_id == id).update(data)
+        db.commit()
+        db.close()
+        return None
 
 examinationnv = CRUDExaminationNv(ExaminationNv)
