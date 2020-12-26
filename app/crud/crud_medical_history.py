@@ -28,6 +28,15 @@ class CRUDMedicalHistory(CRUDBase[None, MedicalHistory, None]):
         )
         db.add(db_obj)
         db.commit()
+        db.close()
         return db_obj
+
+    def updateMedicalHistory(self, db: Session, id: str, data: dict) -> Any:
+        """修改病例详情"""
+        data = jsonable_encoder(data)
+        db.query(MedicalHistory).filter(MedicalHistory.base_info_id == id).update(data)
+        db.commit()
+        db.close()
+        return None
 
 medicalhistory = CRUDMedicalHistory(MedicalHistory)
