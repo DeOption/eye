@@ -28,6 +28,15 @@ class CRUDExaminationCornea(CRUDBase[None, ExaminationCornea, None]):
         )
         db.add(db_obj)
         db.commit()
+        db.close()
         return db_obj
+
+    def updateExaminationCornea(self, db: Session, id: str, data: dict) -> Any:
+        """修改角膜映光"""
+        data = jsonable_encoder(data)
+        db.query(ExaminationCornea).filter(ExaminationCornea.base_info_id == id).update(data)
+        db.commit()
+        db.close()
+        return None
 
 examinationcornea = CRUDExaminationCornea(ExaminationCornea)

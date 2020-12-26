@@ -6,7 +6,7 @@ from app.snow.snowflake import worker
 from typing import Any
 
 class CRUDExaminationEyeballsport(CRUDBase[None, ExaminationEyeballsport, None]):
-    def createExaminationSlj(
+    def createExaminationEyeballsport(
             self,
             db: Session,
             base_info_id: str,
@@ -28,6 +28,15 @@ class CRUDExaminationEyeballsport(CRUDBase[None, ExaminationEyeballsport, None])
         )
         db.add(db_obj)
         db.commit()
+        db.close()
         return db_obj
+
+    def updateExaminationEyeballsport(self, db: Session, id: str, data: dict) -> Any:
+        """修改眼球运动"""
+        data = jsonable_encoder(data)
+        db.query(ExaminationEyeballsport).filter(ExaminationEyeballsport.base_info_id == id).update(data)
+        db.commit()
+        db.close()
+        return None
 
 examinationeyeballsport = CRUDExaminationEyeballsport(ExaminationEyeballsport)

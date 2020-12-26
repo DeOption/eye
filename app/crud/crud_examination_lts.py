@@ -28,6 +28,15 @@ class CRUDExaminationLts(CRUDBase[None, ExaminationLts, None]):
         )
         db.add(db_obj)
         db.commit()
+        db.close()
         return db_obj
+
+    def updateExaminationLts(self, db: Session, id: str, data: dict) -> Any:
+        """修改立体视"""
+        data = jsonable_encoder(data)
+        db.query(ExaminationLts).filter(ExaminationLts.base_info_id == id).update(data)
+        db.commit()
+        db.close()
+        return None
 
 examinationlts = CRUDExaminationLts(ExaminationLts)

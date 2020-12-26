@@ -59,6 +59,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         )
         db.add(db_obj)
         db.commit()
+        db.close()
         return db_obj
 
     '''

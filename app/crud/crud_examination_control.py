@@ -28,6 +28,16 @@ class CRUDExaminationControl(CRUDBase[None, ExaminationControl, None]):
         )
         db.add(db_obj)
         db.commit()
+        db.close()
         return db_obj
+
+    def updateExaminationControl(self, db: Session, id: str, data: dict) -> Any:
+        """修改控制力"""
+        data = jsonable_encoder(data)
+        print(data)
+        db.query(ExaminationControl).filter(ExaminationControl.base_info_id == id).update({"examination_Control": data})
+        db.commit()
+        db.close()
+        return None
 
 examinationcontrol = CRUDExaminationControl(ExaminationControl)

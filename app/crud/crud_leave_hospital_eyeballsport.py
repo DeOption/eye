@@ -28,6 +28,15 @@ class CRUDLeaveHospitalEyeballsport(CRUDBase[None, LeaveHospitalEyeballsport, No
         )
         db.add(db_obj)
         db.commit()
+        db.close()
         return db_obj
+
+    def updateLeaveHospitalEyeballsport(self, db: Session, id: str, data: dict) -> Any:
+        """修改眼球运动（出院）"""
+        data = jsonable_encoder(data)
+        db.query(LeaveHospitalEyeballsport).filter(LeaveHospitalEyeballsport.base_info_id == id).update(data)
+        db.commit()
+        db.close()
+        return None
 
 leavehospitaleyeballsport = CRUDLeaveHospitalEyeballsport(LeaveHospitalEyeballsport)
