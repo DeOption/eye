@@ -142,9 +142,10 @@ def submitCaseContent(
         )
     return {"return_msg": "OK"}
 
-# @router.get("/get_case_by_lts", summary="条件检索")
+@router.get("/get_case_by_lts", summary="条件检索")
 def getCaseByLTS(
         db: Session = Depends(deps.get_db),
+        id_number: Optional[str] = Query(None, description='患者身份证号'),
         age: Optional[str] = Query(None, description='年龄'),
 
         examination_lts_j: Optional[str] = Query(None, description='近方立体视'),
@@ -166,15 +167,53 @@ def getCaseByLTS(
         S: Optional[str] = Query(None, description="特殊类型斜视"),
         PS: Optional[str] = Query(None, description="中枢性麻痹性斜视"),
         N: Optional[bool] = Query(None, description="眼球震颤"),
-        other: Optional[bool] = Query(None, description="其他")
+        other: Optional[bool] = Query(None, description="其他"),
+        size: Optional[int] = Query(None, description="页面大小"),
+        offset: Optional[int] = Query(None, description="当前页码")
 ) -> dict:
     """
-    通过年龄、立体视、三棱镜、诊断四个条件进行查询
+    通过年龄、身份证、立体视、三棱镜、诊断5个条件进行查询\n
+    获得病人详情信息
     """
-    a = crud_case.case.getCaseByLts(db=db, age=age, examination_lts_j=examination_lts_j, examination_lts_y=examination_lts_y)
-    return a
+    try:
+        result = crud_case.case.getCaseCondition(
+            db=db,
+            age=age,
+            id_number=id_number,
+            examination_lts_j=examination_lts_j,
+            examination_lts_y=examination_lts_y,
+            examination_slj_zj_near=examination_slj_zj_near,
+            examination_slj_zj_far=examination_slj_zj_far,
+            examination_slj_dy_near=examination_slj_dy_near,
+            examination_slj_dy_far=examination_slj_dy_far,
+            examination_slj_cz=examination_slj_cz,
+            examination_slj_cz_z=examination_slj_cz_z,
+            k_method=k_method,
+            latent_strabismus=latent_strabismus,
+            Internal_strabismus=Internal_strabismus,
+            Exotropia=Exotropia,
+            A_V=A_V,
+            V=V,
+            S=S,
+            PS=PS,
+            N=N,
+            other=other,
+            size=size,
+            offset=offset
+        )
+    except Exception as e:
+        print(e)
+        raise HTTPException(
+            status.HTTP_404_NOT_FOUND,
+            detail="没有符合条件的数据"
+        )
+    return {
+        "case_data": result[0],
+        "total": result[1]
+    }
 
-@router.get('/get_case_detail', summary="获取病例详情")
+# 以下功能已被优化
+# @router.get('/get_case_detail', summary="获取病例详情")
 def getCaseDetail(
         db: Session = Depends(deps.get_db),
         id_number: Optional[str] = Query(None, description='患者身份证号'),
