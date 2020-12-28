@@ -77,6 +77,7 @@ class CRUDCase(CRUDBase[None, BaseInfo, None]):
             self,
             db: Session,
             age: str,
+            id: str,
             id_number: str,
             examination_lts_j: str,
             examination_lts_y: str,
@@ -87,7 +88,7 @@ class CRUDCase(CRUDBase[None, BaseInfo, None]):
             examination_slj_cz: str,
             examination_slj_cz_z: str,
             k_method: str,
-            latent_strabismus: str,
+            latent_strabismus: bool,
             Internal_strabismus: str,
             Exotropia: str,
             A_V: str,
@@ -109,6 +110,8 @@ class CRUDCase(CRUDBase[None, BaseInfo, None]):
 
         if age:
             base_info_list.append(BaseInfo.age == age)
+        if id:
+            base_info_list.append(BaseInfo.id == id)
         if id_number:
             base_info_list.append(BaseInfo.id_number == id_number)
         if examination_lts_j:

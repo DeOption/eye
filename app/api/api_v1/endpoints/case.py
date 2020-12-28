@@ -142,9 +142,10 @@ def submitCaseContent(
         )
     return {"return_msg": "OK"}
 
-@router.get("/get_case_by_lts", summary="条件检索")
+@router.get("/get_case_detail", summary="通过特定条件获取病例详情")
 def getCaseByLTS(
         db: Session = Depends(deps.get_db),
+        id: Optional[str] = Query(None, description='病例ID'),
         id_number: Optional[str] = Query(None, description='患者身份证号'),
         age: Optional[str] = Query(None, description='年龄'),
 
@@ -159,7 +160,7 @@ def getCaseByLTS(
         examination_slj_cz_z: Optional[str] = Query(None, description="0-50"),
         k_method: Optional[str] = Query(None, description="k法"),
 
-        latent_strabismus: Optional[str] = Query(None, description="隐斜视"),
+        latent_strabismus: Optional[bool] = Query(None, description="隐斜视"),
         Internal_strabismus: Optional[str] = Query(None, description="内斜视"),
         Exotropia: Optional[str] = Query(None, description="外斜视"),
         A_V: Optional[str] = Query(None, description="A⁃V斜视"),
@@ -172,13 +173,14 @@ def getCaseByLTS(
         offset: Optional[int] = Query(None, description="当前页码")
 ) -> dict:
     """
-    通过年龄、身份证、立体视、三棱镜、诊断5个条件进行查询\n
+    通过病例ID、年龄、身份证、立体视、三棱镜、诊断6个条件进行查询\n
     获得病人详情信息
     """
     try:
         result = crud_case.case.getCaseCondition(
             db=db,
             age=age,
+            id=id,
             id_number=id_number,
             examination_lts_j=examination_lts_j,
             examination_lts_y=examination_lts_y,
