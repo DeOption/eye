@@ -33,6 +33,10 @@ def get_db() -> Generator:
 def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(oauth2)
 ) -> User:
+    # print(token1)
+    # token: dict = {}
+    # token["access_token"] = token1["access_token"]
+    # token["token_type"] = token1["token_type"]
     try:
         payload = jwt.decode(
             token, setting.SECRET_KEY, algorithms=[security.ALGORITHM]

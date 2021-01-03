@@ -19,14 +19,24 @@ class CRUDExaminationEyeballsport(CRUDBase[None, ExaminationEyeballsport, None])
         :param data: {eye_type, normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique}\n
         :return: None
         """
-        examination_eyeballsport_id = worker.get_id()
+        examination_eyeballsport_id_left = worker.get_id()
+        examination_eyeballsport_id_right = worker.get_id()
         data = jsonable_encoder(data)
-        db_obj = ExaminationEyeballsport(
-            base_info_id=base_info_id,
-            examination_eyeballsport_id=examination_eyeballsport_id,
-            **data
-        )
-        db.add(db_obj)
+        db_obj = [
+            ExaminationEyeballsport(
+                base_info_id=base_info_id,
+                examination_eyeballsport_id=examination_eyeballsport_id_left,
+                eye_type="left",
+                **data["left"]
+            ),
+            ExaminationEyeballsport(
+                base_info_id=base_info_id,
+                examination_eyeballsport_id=examination_eyeballsport_id_right,
+                eye_type="right",
+                **data["right"]
+            )
+        ]
+        db.add_all(db_obj)
         db.commit()
         db.close()
         return db_obj
@@ -34,7 +44,12 @@ class CRUDExaminationEyeballsport(CRUDBase[None, ExaminationEyeballsport, None])
     def updateExaminationEyeballsport(self, db: Session, id: str, data: dict) -> Any:
         """修改眼球运动"""
         data = jsonable_encoder(data)
-        db.query(ExaminationEyeballsport).filter(ExaminationEyeballsport.base_info_id == id).update(data)
+        db.query(ExaminationEyeballsport).\
+            filter(ExaminationEyeballsport.base_info_id == id, ExaminationEyeballsport.eye_type == "left").\
+            update(data["left"])
+        db.query(ExaminationEyeballsport).\
+            filter(ExaminationEyeballsport.base_info_id == id, ExaminationEyeballsport.eye_type == "right").\
+            update(data["right"])
         db.commit()
         db.close()
         return None

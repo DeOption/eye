@@ -19,14 +19,24 @@ class CRUDExaminationRo(CRUDBase[None, ExaminationRo, None]):
         :param data: {eye_type, ds, dc, a}
         :return: None
         """
-        examination_ro_id = worker.get_id()
+        examination_ro_id_left = worker.get_id()
+        examination_ro_id_right = worker.get_id()
         data = jsonable_encoder(data)
-        db_obj = ExaminationRo(
-            base_info_id=base_info_id,
-            examination_ro_id=examination_ro_id,
-            **data
-        )
-        db.add(db_obj)
+        db_obj = [
+            ExaminationRo(
+                base_info_id=base_info_id,
+                examination_ro_id=examination_ro_id_left,
+                eye_type="left",
+                **data["left"]
+            ),
+            ExaminationRo(
+                base_info_id=base_info_id,
+                examination_ro_id=examination_ro_id_right,
+                eye_type="right",
+                **data["right"]
+            )
+        ]
+        db.add_all(db_obj)
         db.commit()
         db.close()
         return db_obj
@@ -34,7 +44,12 @@ class CRUDExaminationRo(CRUDBase[None, ExaminationRo, None]):
     def updateExaminationRo(self, db: Session, id: str, data: dict) -> Any:
         """修改检影验光"""
         data = jsonable_encoder(data)
-        db.query(ExaminationRo).filter(ExaminationRo.base_info_id == id).update(data)
+        db.query(ExaminationRo).\
+            filter(ExaminationRo.base_info_id == id, ExaminationRo.eye_type == "left").\
+            update(data["left"])
+        db.query(ExaminationRo).\
+            filter(ExaminationRo.base_info_id == id, ExaminationRo.eye_type == "right").\
+            update(data["right"])
         db.commit()
         db.close()
         return None

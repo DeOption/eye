@@ -37,6 +37,7 @@ def getCaseList(
     else:
         caselist = crud_case.case.getAllCaseLists(db=db, size=size, offset=offset)
     return {
+        "return_code": 0,
         "return_msg": "OK",
         "case_list": caselist[0],
         "total": len(caselist[1])
@@ -69,9 +70,9 @@ def submitCaseContent(
         examination_corrected_visual: dict #矫正视力\n
             {left, right}\n
         examination_co: dict #电脑验光\n
-            {eye_type, ds, dc, a}\n
+            {left: {ds, dc, a}, right: {ds, dc, a}}\n
         examination_ro: dict #检影验光\n
-            {eye_type, ds, dc, a}\n
+            {left: {ds, dc, a}, right: {ds, dc, a}}\n
         examination_tsj: dict #同视机\n
             {examination_tsj_tss, examination_tsj_tss_sp, examination_tsj_tss_cz, examination_tsj_tss_cs_z}\n
             {同时视，同时视水平值，同时视垂直值，同时视垂直值具体数值}\n
@@ -79,13 +80,19 @@ def submitCaseContent(
             {examination_lts_j, examination_lts_y}\n
             {近方随机点立体视，远方随机点立体视}\n
         examination_cornea: dict #角膜映光\n
-            {eye_type, examination_cornea_sp, examination_cornea_cz, examination_cornea_cz_z}\n
+            {\n
+                left: {examination_cornea_sp, examination_cornea_cz, examination_cornea_cz_z}, \n
+                right: {examination_cornea_sp, examination_cornea_cz, examination_cornea_cz_z}\n
+            }\n
             {眼别，水平值，垂直值，垂直数值}\n
         examination_slj: dict #三棱镜\n
             {examination_slj_zj_near, examination_slj_zj_far, examination_slj_dy_near, examination_slj_dy_far, examination_slj_cz, examination_slj_cz_z, k_method}\n
             {视近(直角)，视远(直角)，视近(等腰)，视远(等腰)，垂直三棱镜，0-50，k法}\n
         examination_eyeballsport: dict #眼球运动\n
-            {eye_type, normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique}\n
+            {\n
+                left: {normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique},\n
+                right: {normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique}\n
+            }\n
             {眼别，正常，外直肌，内直肌，上直肌，下直肌，上斜肌，下斜肌}\n
         examination_control: str #控制力\n
     :param diagnosis: #诊断\n
@@ -107,7 +114,10 @@ def submitCaseContent(
             {examination_cornea_sp, examination_cornea_cz, examination_cornea_cz_z}\n
             {水平值，垂直值，垂直数值}\n
         leave_hospital_eyeballsport: dict #眼球运动（出院）\n
-            {eye_type, normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique}\n
+            {\n
+                left: {normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique},\n
+                right: {normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique}\n
+            }\n
             {眼别，正常，外直肌，内直肌，上直肌，下直肌，上斜肌，下斜肌}\n
     :return: 提交成功返回200/ok
     """
@@ -140,11 +150,15 @@ def submitCaseContent(
             status.HTTP_417_EXPECTATION_FAILED,
             detail='病例提交失败'
         )
-    return {"return_msg": "OK"}
+    return {
+        "return_code": 0,
+        "return_msg": "OK"
+    }
 
 @router.get("/get_case_detail", summary="通过特定条件获取病例详情")
 def getCaseByLTS(
         db: Session = Depends(deps.get_db),
+
         id: Optional[str] = Query(None, description='病例ID'),
         id_number: Optional[str] = Query(None, description='患者身份证号'),
         age: Optional[str] = Query(None, description='年龄'),
@@ -210,6 +224,8 @@ def getCaseByLTS(
             detail="没有符合条件的数据"
         )
     return {
+        "return_code": 0,
+        "return_msg": "OK",
         "case_data": result[0],
         "total": result[1]
     }
@@ -231,6 +247,8 @@ def getCaseDetail(
     patient = crud_case.case.getCaseDetail(db=db, id_number=id_number, size=size, offset=offset)
 
     return {
+        "return_code": 0,
+        "return_msg": "OK",
         "case_data": patient[0],
         "total": len(patient[1])
     }
@@ -263,9 +281,9 @@ def update_case_detail(
         examination_corrected_visual: dict #矫正视力\n
             {left, right}\n
         examination_co: dict #电脑验光\n
-            {eye_type, ds, dc, a}\n
+            {left: {ds, dc, a}, right: {ds, dc, a}}\n
         examination_ro: dict #检影验光\n
-            {eye_type, ds, dc, a}\n
+            {left: {ds, dc, a}, right: {ds, dc, a}}\n
         examination_tsj: dict #同视机\n
             {examination_tsj_tss, examination_tsj_tss_sp, examination_tsj_tss_cz, examination_tsj_tss_cs_z}\n
             {同时视，同时视水平值，同时视垂直值，同时视垂直值具体数值}\n
@@ -273,13 +291,19 @@ def update_case_detail(
             {examination_lts_j, examination_lts_y}\n
             {近方随机点立体视，远方随机点立体视}\n
         examination_cornea: dict #角膜映光\n
-            {eye_type, examination_cornea_sp, examination_cornea_cz, examination_cornea_cz_z}\n
+            {\n
+                left: {examination_cornea_sp, examination_cornea_cz, examination_cornea_cz_z}, \n
+                right: {examination_cornea_sp, examination_cornea_cz, examination_cornea_cz_z}\n
+            }\n
             {眼别，水平值，垂直值，垂直数值}\n
         examination_slj: dict #三棱镜\n
             {examination_slj_zj_near, examination_slj_zj_far, examination_slj_dy_near, examination_slj_dy_far, examination_slj_cz, examination_slj_cz_z, k_method}\n
             {视近(直角)，视远(直角)，视近(等腰)，视远(等腰)，垂直三棱镜，0-50，k法}\n
         examination_eyeballsport: dict #眼球运动\n
-            {eye_type, normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique}\n
+            {\n
+                left: {normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique},\n
+                right: {normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique}\n
+            }\n
             {眼别，正常，外直肌，内直肌，上直肌，下直肌，上斜肌，下斜肌}\n
         examination_control: str #控制力\n
     :param diagnosis: #诊断\n
@@ -301,7 +325,10 @@ def update_case_detail(
             {examination_cornea_sp, examination_cornea_cz, examination_cornea_cz_z}\n
             {水平值，垂直值，垂直数值}\n
         leave_hospital_eyeballsport: dict #眼球运动（出院）\n
-            {eye_type, normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique}\n
+            {\n
+                left: {normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique},\n
+                right: {normal, external_rectus, internal_rectus, pper_rectus, lower_rectus, upper_oblique, lower_oblique}\n
+            }\n
             {眼别，正常，外直肌，内直肌，上直肌，下直肌，上斜肌，下斜肌}\n
     :return: 修改成功返回200/ok
     """
@@ -327,7 +354,10 @@ def update_case_detail(
     crud_diagnosis.diagnosis.updateDiagnosis(db=db, id=id, data=diagnosis)
     crud_surgery.surgery.updateSurgery(db=db, id=id, data=surgery)
 
-    return {"return_msg": "OK"}
+    return {
+        "return_code": 0,
+        "return_msg": "OK"
+    }
 
 if __name__ == '__main__':
     id = worker.get_id()

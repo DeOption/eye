@@ -19,14 +19,24 @@ class CRUDExaminationCornea(CRUDBase[None, ExaminationCornea, None]):
         :param data: {eye_type, examination_cornea_sp, examination_cornea_cz, examination_cornea_cz_z}\n
         :return: None
         """
-        examination_cornea_id = worker.get_id()
+        examination_cornea_id_left = worker.get_id()
+        examination_cornea_id_right = worker.get_id()
         data = jsonable_encoder(data)
-        db_obj = ExaminationCornea(
-            base_info_id=base_info_id,
-            examination_cornea_id=examination_cornea_id,
-            **data
-        )
-        db.add(db_obj)
+        db_obj = [
+            ExaminationCornea(
+                base_info_id=base_info_id,
+                examination_cornea_id=examination_cornea_id_left,
+                eye_type="left",
+                **data["left"]
+            ),
+            ExaminationCornea(
+                base_info_id=base_info_id,
+                examination_cornea_id=examination_cornea_id_right,
+                eye_type="right",
+                **data["right"]
+            )
+        ]
+        db.add_all(db_obj)
         db.commit()
         db.close()
         return db_obj
@@ -34,7 +44,12 @@ class CRUDExaminationCornea(CRUDBase[None, ExaminationCornea, None]):
     def updateExaminationCornea(self, db: Session, id: str, data: dict) -> Any:
         """修改角膜映光"""
         data = jsonable_encoder(data)
-        db.query(ExaminationCornea).filter(ExaminationCornea.base_info_id == id).update(data)
+        db.query(ExaminationCornea).\
+            filter(ExaminationCornea.base_info_id == id, ExaminationCornea.eye_type == "left").\
+            update(data["left"])
+        db.query(ExaminationCornea).\
+            filter(ExaminationCornea.base_info_id == id, ExaminationCornea.eye_type == "right").\
+            update(data["right"])
         db.commit()
         db.close()
         return None
