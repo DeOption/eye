@@ -33,6 +33,7 @@ def userInfo(
         'phone': user.phone
     }
     return {
+        "return_code": 0,
         "return_msg": "OK",
         "user_info": user_info
     }

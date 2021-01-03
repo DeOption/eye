@@ -34,6 +34,9 @@ def login(
         )
     access_token_expires = timedelta(minutes=setting.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
+        "return_code": 0,
+        "return_msg": "OK",
+        "uid": user.uid,
         "access_token": security.create_access_token(
             user.uid, expires_delta=access_token_expires
         ),
