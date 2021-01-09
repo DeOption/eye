@@ -332,28 +332,34 @@ def update_case_detail(
             {眼别，正常，外直肌，内直肌，上直肌，下直肌，上斜肌，下斜肌}\n
     :return: 修改成功返回200/ok
     """
-    crud_case.case.updateBaseInfoDetails(db=db, id=id, data=base_info)
-    crud_medical_history.medicalhistory.updateMedicalHistory(db=db, id=id, data=medical_history)
+    try:
+        crud_case.case.updateBaseInfoDetails(db=db, id=id, data=base_info)
+        crud_medical_history.medicalhistory.updateMedicalHistory(db=db, id=id, data=medical_history)
 
-    crud_examination_nv.examinationnv.updateExaminationNv(db=db, id=id, data=examination['examination_nv'])
-    crud_examination_corrected_visual.examinationcorrectedvisual.updateExaminationCorrectedVisual(db=db, id=id, data=examination['examination_corrected_visual'])
-    crud_examination_co.examinationco.updateExaminationCo(db=db, id=id, data=examination['examination_co'])
-    crud_examination_ro.examinationro.updateExaminationRo(db=db, id=id, data=examination['examination_ro'])
-    crud_examination_tsj.examinationtsj.updateExaminationTsj(db=db, id=id, data=examination['examination_tsj'])
-    crud_examination_lts.examinationlts.updateExaminationLts(db=db, id=id, data=examination['examination_lts'])
-    crud_examination_cornea.examinationcornea.updateExaminationCornea(db=db, id=id, data=examination['examination_cornea'])
-    crud_examination_slj.examinationslj.updateExaminationSlj(db=db, id=id, data=examination['examination_slj'])
-    crud_examination_eyeballsport.examinationeyeballsport.updateExaminationEyeballsport(db=db, id=id, data=examination['examination_eyeballsport'])
-    crud_examination_control.examinationcontrol.updateExaminationControl(db=db, id=id, data=examination['examination_control'])
+        crud_examination_nv.examinationnv.updateExaminationNv(db=db, id=id, data=examination['examination_nv'])
+        crud_examination_corrected_visual.examinationcorrectedvisual.updateExaminationCorrectedVisual(db=db, id=id, data=examination['examination_corrected_visual'])
+        crud_examination_co.examinationco.updateExaminationCo(db=db, id=id, data=examination['examination_co'])
+        crud_examination_ro.examinationro.updateExaminationRo(db=db, id=id, data=examination['examination_ro'])
+        crud_examination_tsj.examinationtsj.updateExaminationTsj(db=db, id=id, data=examination['examination_tsj'])
+        crud_examination_lts.examinationlts.updateExaminationLts(db=db, id=id, data=examination['examination_lts'])
+        crud_examination_cornea.examinationcornea.updateExaminationCornea(db=db, id=id, data=examination['examination_cornea'])
+        crud_examination_slj.examinationslj.updateExaminationSlj(db=db, id=id, data=examination['examination_slj'])
+        crud_examination_eyeballsport.examinationeyeballsport.updateExaminationEyeballsport(db=db, id=id, data=examination['examination_eyeballsport'])
+        crud_examination_control.examinationcontrol.updateExaminationControl(db=db, id=id, data=examination['examination_control'])
 
-    crud_leave_hospital_lts.leavehospitallts.updateLeaveHospitalLts(db=db, id=id, data=leave_history['leave_hospital_lts'])
-    crud_leave_hospital_slj.leavehospitalslj.updateLeaveHospitalSlj(db=db, id=id, data=leave_history['leave_hospital_slj'])
-    crud_leave_hospital_cornea.leavehospitalcornea.updateLeaveHospitalCornea(db=db, id=id, data=leave_history['leave_hospital_cornea'])
-    crud_leave_hospital_eyeballsport.leavehospitaleyeballsport.updateLeaveHospitalEyeballsport(db=db, id=id, data=leave_history['leave_hospital_eyeballsport'])
+        crud_leave_hospital_lts.leavehospitallts.updateLeaveHospitalLts(db=db, id=id, data=leave_history['leave_hospital_lts'])
+        crud_leave_hospital_slj.leavehospitalslj.updateLeaveHospitalSlj(db=db, id=id, data=leave_history['leave_hospital_slj'])
+        crud_leave_hospital_cornea.leavehospitalcornea.updateLeaveHospitalCornea(db=db, id=id, data=leave_history['leave_hospital_cornea'])
+        crud_leave_hospital_eyeballsport.leavehospitaleyeballsport.updateLeaveHospitalEyeballsport(db=db, id=id, data=leave_history['leave_hospital_eyeballsport'])
 
-    crud_diagnosis.diagnosis.updateDiagnosis(db=db, id=id, data=diagnosis)
-    crud_surgery.surgery.updateSurgery(db=db, id=id, data=surgery)
-
+        crud_diagnosis.diagnosis.updateDiagnosis(db=db, id=id, data=diagnosis)
+        crud_surgery.surgery.updateSurgery(db=db, id=id, data=surgery)
+    except Exception as e:
+        print(e)
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="修改失败，请检查各字段是否符合填写格式"
+        )
     return {
         "return_code": 0,
         "return_msg": "OK"
