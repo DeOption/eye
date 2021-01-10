@@ -1,6 +1,6 @@
 from typing import Any
 from sqlalchemy.orm import Session
-from sqlalchemy.sql import or_, and_
+from sqlalchemy.sql import or_, and_, func
 from app.crud.base import CRUDBase
 from app.models.base_info import BaseInfo
 from app.models.examination_lts import ExaminationLts
@@ -159,10 +159,10 @@ class CRUDCase(CRUDBase[None, BaseInfo, None]):
             outerjoin(Diagnosis).filter(*diagnosis_list).\
             limit(size).offset((offset-1)*size).all()
 
-        total = db.query(BaseInfo).filter(*base_info_list). \
+        total = db.query(func.count(BaseInfo.id)).filter(*base_info_list). \
             outerjoin(ExaminationLts).filter(*examination_lts_list). \
             outerjoin(ExaminationSlj).filter(*examination_slj_list). \
-            outerjoin(Diagnosis).filter(*diagnosis_list).count()
+            outerjoin(Diagnosis).filter(*diagnosis_list).scalar()
 
         # patient_list: list = []
         # patient_dict: dict = {}
