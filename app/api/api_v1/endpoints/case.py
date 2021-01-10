@@ -27,15 +27,27 @@ def getCaseList(
             "total": "\n
     }\n
     """
-    if id_number:
-        caselist = crud_case.case.getCaseLists(db=db, id_number=id_number, size=size, offset=offset)
-        if not caselist[0]:
-            raise HTTPException(
-                status.HTTP_404_NOT_FOUND,
-                detail="没有此病例！"
-            )
-    else:
-        caselist = crud_case.case.getAllCaseLists(db=db, size=size, offset=offset)
+    try:
+        if id_number:
+            caselist = crud_case.case.getCaseLists(db=db, id_number=id_number, size=size, offset=offset)
+            if not caselist[0]:
+                return {
+                    "return_code": 0,
+                    "return_msg": "OK",
+                    "case_list": [],
+                    "total": 0
+                }
+        else:
+            caselist = crud_case.case.getAllCaseLists(db=db, size=size, offset=offset)
+    except Exception as e:
+        print(e)
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "return_code": -1,
+                "return_msg": "查询失败"
+            },
+        )
     return {
         "return_code": 0,
         "return_msg": "OK",
@@ -147,8 +159,11 @@ def submitCaseContent(
     except Exception as e:
         print(e)
         raise HTTPException(
-            status.HTTP_417_EXPECTATION_FAILED,
-            detail='病例提交失败'
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "return_code": -1,
+                "return_msg": "病例提交失败"
+            },
         )
     return {
         "return_code": 0,
@@ -220,8 +235,11 @@ def getCaseByLTS(
     except Exception as e:
         print(e)
         raise HTTPException(
-            status.HTTP_404_NOT_FOUND,
-            detail="没有符合条件的数据"
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "return_code": -1,
+                "return_msg": "查询失败"
+            },
         )
     return {
         "return_code": 0,
@@ -265,7 +283,7 @@ def update_case_detail(
         leave_history: Optional[dict] = Body(..., description="出院情况")
 ) -> dict:
     """
-    提交病例信息\n
+    更新病例信息\n
     :param db: 数据库对象\n
     :param id: 基本信息id\n
     :param base_info: 基本信息\n
@@ -357,8 +375,11 @@ def update_case_detail(
     except Exception as e:
         print(e)
         raise HTTPException(
-            status.HTTP_400_BAD_REQUEST,
-            detail="修改失败，请检查各字段是否符合填写格式"
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "return_code": -1,
+                "return_msg": "病例更新失败"
+            },
         )
     return {
         "return_code": 0,

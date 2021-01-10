@@ -23,10 +23,11 @@ def userInfo(
 
     user = crud_user.user.getUser(db=db, uid=uid)
     if not user:
-        raise HTTPException(
-            status.HTTP_404_NOT_FOUND,
-            detail="没有此用户！"
-        )
+        return {
+            "return_code": 0,
+            "return_msg": "OK",
+            "user_info": []
+        }
     user_info = {
         'name': user.name,
         'email': user.email,
