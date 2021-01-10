@@ -11,8 +11,8 @@ router = APIRouter()
 def getCaseByLTS(
         db: Session = Depends(deps.get_db),
         id: Optional[str] = Query(None, description='病例id'),
-        size: Optional[int] = Query(None, description="页面大小"),
-        offset: Optional[int] = Query(None, description="当前页码")
+        # size: Optional[int] = Query(None, description="页面大小"),
+        # offset: Optional[int] = Query(None, description="当前页码")
 ) -> dict:
     """
     接口：获取病例列表，医生通过输入患者的身份证号，查询出具体患者的病例信息\n
@@ -27,7 +27,7 @@ def getCaseByLTS(
     }\n
     """
     try:
-        caselist = crud_case.case.getCaseDetail(db=db, id=id, size=size, offset=offset)
+        caselist = crud_case.case.getCaseDetail(db=db, id=id, size=1, offset=1)
     except Exception as e:
         print(e)
         raise HTTPException(
