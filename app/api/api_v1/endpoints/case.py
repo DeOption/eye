@@ -7,18 +7,17 @@ from app.snow.snowflake import worker
 
 router = APIRouter()
 
-
-@router.get('/get_case_list', summary="获取病例列表")
-def getCaseList(
+@router.get("/get_case_detail", summary="获取病例详情")
+def getCaseByLTS(
         db: Session = Depends(deps.get_db),
-        id_number: Optional[str] = Query(None, description='患者身份证号'),
+        id: Optional[str] = Query(None, description='病例id'),
         size: Optional[int] = Query(None, description="页面大小"),
         offset: Optional[int] = Query(None, description="当前页码")
 ) -> dict:
     """
     接口：获取病例列表，医生通过输入患者的身份证号，查询出具体患者的病例信息\n
     :param db: 数据库连接对象\n
-    :param id_number: 患者的身份证号/如果身份证号不填写，返回所有病例信息\n
+    :param id: 病例id
     :param size: 页面大小\n
     :param offset: 当前页码\n
     :return: {\n
@@ -28,17 +27,7 @@ def getCaseList(
     }\n
     """
     try:
-        if id_number:
-            caselist = crud_case.case.getCaseLists(db=db, id_number=id_number, size=size, offset=offset)
-            if not caselist[0]:
-                return {
-                    "return_code": 0,
-                    "return_msg": "OK",
-                    "case_list": [],
-                    "total": 0
-                }
-        else:
-            caselist = crud_case.case.getAllCaseLists(db=db, size=size, offset=offset)
+        caselist = crud_case.case.getCaseDetail(db=db, id=id, size=size, offset=offset)
     except Exception as e:
         print(e)
         raise HTTPException(
@@ -51,8 +40,8 @@ def getCaseList(
     return {
         "return_code": 0,
         "return_msg": "OK",
-        "case_list": caselist[0],
-        "total": len(caselist[1])
+        "case_data": caselist[0],
+        "total": caselist[1]
     }
 
 
@@ -170,8 +159,8 @@ def submitCaseContent(
         "return_msg": "OK"
     }
 
-@router.get("/get_case_detail", summary="通过特定条件获取病例详情")
-def getCaseByLTS(
+@router.get('/get_case_list', summary="获取病例列表")
+def getCaseList(
         db: Session = Depends(deps.get_db),
 
         id: Optional[str] = Query(None, description='病例ID'),
