@@ -28,13 +28,11 @@ def login(
         password=form_data.password
     )
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={
+        return {
                 "return_code": -1,
                 "return_msg": "认证失败"
-            },
-        )
+        }
+
     access_token_expires = timedelta(minutes=setting.ACCESS_TOKEN_EXPIRE_MINUTES)
     return {
         "return_code": 0,
