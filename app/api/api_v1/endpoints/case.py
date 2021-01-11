@@ -260,7 +260,7 @@ def getCaseDetail(
         "total": len(patient[1])
     }
 
-@router.put('/update_case_detail', summary="修改病例")
+@router.post('/update_case_detail', summary="修改病例")
 def update_case_detail(
         db: Session = Depends(deps.get_db),
         id: Optional[str] = Body(..., description="基本信息ID"),
