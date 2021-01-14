@@ -9,7 +9,7 @@ class ExaminationCorrectedVisual(Base):
 
     examination_corrected_visual_id = Column(VARCHAR(20), primary_key=True, comment="矫正视力表id")
     base_info_id = Column(VARCHAR(20), ForeignKey('base_info.id'), comment="基本表id")
-    left = Column(VARCHAR(10), nullable=False, comment="左眼矫正视力")
-    right = Column(VARCHAR(10), nullable=False, comment="右眼矫正视力")
+    left = Column(VARCHAR(10), comment="左眼矫正视力")
+    right = Column(VARCHAR(10), comment="右眼矫正视力")
 
     baseInfo = relationship("BaseInfo", back_populates='examinationCorrectedVisual')
