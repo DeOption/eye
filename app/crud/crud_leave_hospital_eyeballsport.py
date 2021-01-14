@@ -36,9 +36,7 @@ class CRUDLeaveHospitalEyeballsport(CRUDBase[None, LeaveHospitalEyeballsport, No
                 **data["right"]
             )
         ]
-        db.add_all(db_obj)
-        db.commit()
-        db.close()
+
         return db_obj
 
     def updateLeaveHospitalEyeballsport(self, db: Session, id: str, data: dict) -> Any:
@@ -50,8 +48,7 @@ class CRUDLeaveHospitalEyeballsport(CRUDBase[None, LeaveHospitalEyeballsport, No
         db.query(LeaveHospitalEyeballsport).\
             filter(LeaveHospitalEyeballsport.base_info_id == id, LeaveHospitalEyeballsport.eye_type == "right").\
             update(data["right"])
-        db.commit()
-        db.close()
+
         return None
 
 leavehospitaleyeballsport = CRUDLeaveHospitalEyeballsport(LeaveHospitalEyeballsport)

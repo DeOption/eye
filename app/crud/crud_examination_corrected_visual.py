@@ -26,17 +26,14 @@ class CRUDExaminationCorrectedVisual(CRUDBase[None, ExaminationCorrectedVisual, 
             examination_corrected_visual_id=examination_corrected_visual_id,
             **data
         )
-        db.add(db_obj)
-        db.commit()
-        db.close()
+
         return db_obj
 
     def updateExaminationCorrectedVisual(self, db: Session, id: str, data: dict) -> Any:
         """修改矫正视力"""
         data = jsonable_encoder(data)
         db.query(ExaminationCorrectedVisual).filter(ExaminationCorrectedVisual.base_info_id == id).update(data)
-        db.commit()
-        db.close()
+
         return None
 
 examinationcorrectedvisual = CRUDExaminationCorrectedVisual(ExaminationCorrectedVisual)

@@ -26,17 +26,14 @@ class CRUDLeaveHospitalCornea(CRUDBase[None, LeaveHospitalCornea, None]):
             leave_hospital_cornea_id=leave_hospital_cornea_id,
             **data
         )
-        db.add(db_obj)
-        db.commit()
-        db.close()
+
         return db_obj
 
     def updateLeaveHospitalCornea(self, db: Session, id: str, data: dict) -> Any:
         """修改角膜映光（出院）"""
         data = jsonable_encoder(data)
         db.query(LeaveHospitalCornea).filter(LeaveHospitalCornea.base_info_id == id).update(data)
-        db.commit()
-        db.close()
+
         return None
 
 leavehospitalcornea = CRUDLeaveHospitalCornea(LeaveHospitalCornea)
