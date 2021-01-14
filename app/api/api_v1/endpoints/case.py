@@ -151,7 +151,7 @@ def submitCaseContent(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={
                 "return_code": -1,
-                "return_msg": "病例提交失败"
+                "return_msg": "病例提交失败:" + str(e)
             },
         )
     return {

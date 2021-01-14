@@ -62,6 +62,7 @@ class CRUDCase(CRUDBase[None, BaseInfo, None]):
         """
         data = jsonable_encoder(data)
         time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data["suifang"] = data["suifang"][0:10] + " " + data["suifang"][11:19]
         db_obj = BaseInfo(
             id=id,
             create_time=time,

@@ -18,6 +18,7 @@ class CRUDExaminationCornea(CRUDBase[None, ExaminationCornea, None]):
         :param base_info_id: 病例ID
         :param data: {eye_type, examination_cornea_sp, examination_cornea_cz, examination_cornea_cz_z}\n
         :return: None
+
         """
         examination_cornea_id_left = worker.get_id()
         examination_cornea_id_right = worker.get_id()
