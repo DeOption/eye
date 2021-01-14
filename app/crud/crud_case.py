@@ -238,23 +238,55 @@ class CRUDCase(CRUDBase[None, BaseInfo, None]):
                 "suifang": patient_i.suifang,
                 "beizhu": patient_i.beizhu
             }
-            patient_dict['medicalHistory'] = patient_i.medicalHistory[0] if patient_i.medicalHistory else ""
-            patient_dict['examinationNv'] = patient_i.examinationNv[0] if patient_i.examinationNv else ""
-            patient_dict['examinationCorrectedVisual'] = patient_i.examinationCorrectedVisual[0] if patient_i.examinationCorrectedVisual else ""
-            patient_dict['examinationCo'] = patient_i.examinationCo if patient_i.examinationCo else ""
-            patient_dict['examinationRo'] = patient_i.examinationRo if patient_i.examinationRo else ""
-            patient_dict['examinationTsj'] = patient_i.examinationTsj[0] if patient_i.examinationTsj else ""
-            patient_dict['examinationLts'] = patient_i.examinationLts[0] if patient_i.examinationLts else ""
-            patient_dict['examinationControl'] = patient_i.examinationControl[0] if patient_i.examinationControl else ""
-            patient_dict['examinationSlj'] = patient_i.examinationSlj[0] if patient_i.examinationSlj else ""
-            patient_dict['examinationEyeballsport'] = patient_i.examinationEyeballsport if patient_i.examinationEyeballsport else ""
-            patient_dict['diagnosis1'] = patient_i.diagnosis1[0] if patient_i.diagnosis1 else ""
-            patient_dict['surgery1'] = patient_i.surgery1[0] if patient_i.surgery1 else ""
-            patient_dict['leaveHospitalLts'] = patient_i.leaveHospitalLts[0] if patient_i.leaveHospitalLts else ""
-            patient_dict['leaveHospitalCornea'] = patient_i.leaveHospitalCornea[0] if patient_i.leaveHospitalCornea else ""
-            patient_dict['leaveHospitalSlj'] = patient_i.leaveHospitalSlj[0] if patient_i.leaveHospitalSlj else ""
-            patient_dict['leaveHospitalEyeballsport'] = patient_i.leaveHospitalEyeballsport if patient_i.leaveHospitalEyeballsport else ""
-            patient_dict['examinationCornea'] = patient_i.examinationCornea if patient_i.examinationCornea else ""
+            patient_dict['medical_history'] = patient_i.medicalHistory[0] if patient_i.medicalHistory else ""
+            patient_dict['examination'] = {}
+            patient_dict['examination']['examination_nv'] = patient_i.examinationNv[0] if patient_i.examinationNv else ""
+            patient_dict['examination']['examination_corrected_visual'] = patient_i.examinationCorrectedVisual[0] if patient_i.examinationCorrectedVisual else ""
+            patient_dict['examination']['examination_co'] = {}
+            if patient_i.examinationCo:
+                patient_dict['examination']['examination_co'][patient_i.examinationCo[0].eye_type] = patient_i.examinationCo[0]
+                patient_dict['examination']['examination_co'][patient_i.examinationCo[1].eye_type] = patient_i.examinationCo[1]
+            else:
+                patient_dict['examination']['examination_co']['left'] = ""
+                patient_dict['examination']['examination_co']['right'] = ""
+            patient_dict['examination']['examination_ro'] = {}
+            if patient_i.examinationRo:
+                patient_dict['examination']['examination_ro'][patient_i.examinationRo[0].eye_type] = patient_i.examinationRo[0]
+                patient_dict['examination']['examination_ro'][patient_i.examinationRo[1].eye_type] = patient_i.examinationRo[1]
+            else:
+                patient_dict['examination']['examination_ro']['left'] = ""
+                patient_dict['examination']['examination_ro']['right'] = ""
+            patient_dict['examination']['examination_tsj'] = patient_i.examinationTsj[0] if patient_i.examinationTsj else ""
+            patient_dict['examination']['examination_lts'] = patient_i.examinationLts[0] if patient_i.examinationLts else ""
+            patient_dict['examination']['examination_control'] = patient_i.examinationControl[0] if patient_i.examinationControl else ""
+            patient_dict['examination']['examination_slj'] = patient_i.examinationSlj[0] if patient_i.examinationSlj else ""
+            patient_dict['examination']['examination_eyeballsport'] = {}
+            if patient_i.examinationEyeballsport:
+                patient_dict['examination']['examination_eyeballsport'][patient_i.examinationEyeballsport[0].eye_type] = patient_i.examinationEyeballsport[0]
+                patient_dict['examination']['examination_eyeballsport'][patient_i.examinationEyeballsport[1].eye_type] = patient_i.examinationEyeballsport[1]
+            else:
+                patient_dict['examination']['examination_eyeballsport']['left'] = ""
+                patient_dict['examination']['examination_eyeballsport']['right'] = ""
+            patient_dict['diagnosis'] = patient_i.diagnosis1[0] if patient_i.diagnosis1 else ""
+            patient_dict['surgery'] = patient_i.surgery1[0] if patient_i.surgery1 else ""
+            patient_dict['leave_history'] = {}
+            patient_dict['leave_history']['leave_hospital_lts'] = patient_i.leaveHospitalLts[0] if patient_i.leaveHospitalLts else ""
+            patient_dict['leave_history']['leave_hospital_cornea'] = patient_i.leaveHospitalCornea[0] if patient_i.leaveHospitalCornea else ""
+            patient_dict['leave_history']['leave_hospital_slj'] = patient_i.leaveHospitalSlj[0] if patient_i.leaveHospitalSlj else ""
+            patient_dict['leave_history']['leave_hospital_eyeballsport'] = {}
+            if patient_i.leaveHospitalEyeballsport:
+                patient_dict['leave_history']['leave_hospital_eyeballsport'][patient_i.leaveHospitalEyeballsport[0].eye_type] = patient_i.leaveHospitalEyeballsport[0]
+                patient_dict['leave_history']['leave_hospital_eyeballsport'][patient_i.leaveHospitalEyeballsport[1].eye_type] = patient_i.leaveHospitalEyeballsport[1]
+            else:
+                patient_dict['leave_history']['leave_hospital_eyeballsport']['left'] = ""
+                patient_dict['leave_history']['leave_hospital_eyeballsport']['right'] = ""
+            patient_dict['examination']['examination_cornea'] = {}
+            if patient_i.examinationCornea:
+                patient_dict['examination']['examination_cornea'][patient_i.examinationCornea[0].eye_type] = patient_i.examinationCornea[0]
+                patient_dict['examination']['examination_cornea'][patient_i.examinationCornea[1].eye_type] = patient_i.examinationCornea[1]
+            else:
+                patient_dict['examination']['examination_cornea']['left'] = ""
+                patient_dict['examination']['examination_cornea']['right'] = ""
             patient_list.append(patient_dict)
             # patient_dict = {}
 
