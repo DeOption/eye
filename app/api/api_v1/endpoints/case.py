@@ -34,7 +34,7 @@ def getCaseByLTS(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={
                 "return_code": -1,
-                "return_msg": "查询失败"
+                "return_msg": "查询失败: " + str(e)
             },
         )
     return {
@@ -227,7 +227,7 @@ def getCaseList(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={
                 "return_code": -1,
-                "return_msg": "查询失败"
+                "return_msg": "查询失败: " + str(e)
             },
         )
     return {
@@ -260,7 +260,7 @@ def getCaseDetail(
         "total": len(patient[1])
     }
 
-@router.post('/update_case_detail', summary="修改病例")
+@router.put('/update_case_detail', summary="修改病例")
 def update_case_detail(
         db: Session = Depends(deps.get_db),
         id: Optional[str] = Body(..., description="基本信息ID"),
@@ -367,7 +367,7 @@ def update_case_detail(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={
                 "return_code": -1,
-                "return_msg": "病例更新失败"
+                "return_msg": "病例更新失败: " + str(e)
             },
         )
     return {

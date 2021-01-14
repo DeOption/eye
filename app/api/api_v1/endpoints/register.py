@@ -37,7 +37,7 @@ def register(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail={
                 "return_code": -1,
-                "return_msg": "注册失败，请填写正确信息"
+                "return_msg": "注册失败，请填写正确信息: " + str(e)
             },
         )
     return {
