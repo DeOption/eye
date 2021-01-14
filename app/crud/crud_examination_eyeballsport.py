@@ -36,9 +36,7 @@ class CRUDExaminationEyeballsport(CRUDBase[None, ExaminationEyeballsport, None])
                 **data["right"]
             )
         ]
-        db.add_all(db_obj)
-        db.commit()
-        db.close()
+
         return db_obj
 
     def updateExaminationEyeballsport(self, db: Session, id: str, data: dict) -> Any:
@@ -50,8 +48,7 @@ class CRUDExaminationEyeballsport(CRUDBase[None, ExaminationEyeballsport, None])
         db.query(ExaminationEyeballsport).\
             filter(ExaminationEyeballsport.base_info_id == id, ExaminationEyeballsport.eye_type == "right").\
             update(data["right"])
-        db.commit()
-        db.close()
+
         return None
 
 examinationeyeballsport = CRUDExaminationEyeballsport(ExaminationEyeballsport)

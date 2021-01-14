@@ -26,17 +26,14 @@ class CRUDLeaveHospitalSlj(CRUDBase[None, LeaveHospitalSlj, None]):
             leave_hospital_slj_id=leave_hospital_slj_id,
             **data
         )
-        db.add(db_obj)
-        db.commit()
-        db.close()
+
         return db_obj
 
     def updateLeaveHospitalSlj(self, db: Session, id: str, data: dict) -> Any:
         """修改三棱镜（出院）"""
         data = jsonable_encoder(data)
         db.query(LeaveHospitalSlj).filter(LeaveHospitalSlj.base_info_id == id).update(data)
-        db.commit()
-        db.close()
+
         return None
 
 leavehospitalslj = CRUDLeaveHospitalSlj(LeaveHospitalSlj)

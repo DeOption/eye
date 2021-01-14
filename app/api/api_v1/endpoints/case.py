@@ -124,27 +124,57 @@ def submitCaseContent(
     """
     try:
         id = worker.get_id() #病例id
-        crud_case.case.createBaseInfo(db=db, id=id, data=base_info)
-        crud_medical_history.medicalhistory.createMedicalHistory(db=db, base_info_id=id, data=medical_history)
+        create_case = crud_case.case.createBaseInfo(db=db, id=id, data=base_info)
+        create_medical_history = crud_medical_history.medicalhistory.createMedicalHistory(db=db, base_info_id=id, data=medical_history)
 
-        crud_examination_nv.examinationnv.createExaminationNv(db=db, base_info_id=id, data=examination['examination_nv'])
-        crud_examination_corrected_visual.examinationcorrectedvisual.createExaminationCorrectedVisual(db=db, base_info_id=id, data=examination['examination_corrected_visual'])
-        crud_examination_co.examinationco.createExaminationCo(db=db, base_info_id=id, data=examination['examination_co'])
-        crud_examination_ro.examinationro.createExaminationRo(db=db, base_info_id=id, data=examination['examination_ro'])
-        crud_examination_tsj.examinationtsj.createExaminationTsj(db=db, base_info_id=id, data=examination['examination_tsj'])
-        crud_examination_lts.examinationlts.createExaminationLts(db=db, base_info_id=id, data=examination['examination_lts'])
-        crud_examination_cornea.examinationcornea.createExaminationCornea(db=db, base_info_id=id, data=examination['examination_cornea'])
-        crud_examination_slj.examinationslj.createExaminationSlj(db=db, base_info_id=id, data=examination['examination_slj'])
-        crud_examination_eyeballsport.examinationeyeballsport.createExaminationEyeballsport(db=db, base_info_id=id, data=examination['examination_eyeballsport'])
-        crud_examination_control.examinationcontrol.createExaminationControl(db=db, base_info_id=id, data=examination['examination_control'])
+        create_examination_nv = crud_examination_nv.examinationnv.createExaminationNv(db=db, base_info_id=id, data=examination['examination_nv'])
+        create_examination_corrected_visual = crud_examination_corrected_visual.examinationcorrectedvisual.createExaminationCorrectedVisual(db=db, base_info_id=id, data=examination['examination_corrected_visual'])
+        create_examination_co = crud_examination_co.examinationco.createExaminationCo(db=db, base_info_id=id, data=examination['examination_co'])
+        create_examination_ro = crud_examination_ro.examinationro.createExaminationRo(db=db, base_info_id=id, data=examination['examination_ro'])
+        create_examination_tsj = crud_examination_tsj.examinationtsj.createExaminationTsj(db=db, base_info_id=id, data=examination['examination_tsj'])
+        create_examination_lts = crud_examination_lts.examinationlts.createExaminationLts(db=db, base_info_id=id, data=examination['examination_lts'])
+        create_examination_cornea = crud_examination_cornea.examinationcornea.createExaminationCornea(db=db, base_info_id=id, data=examination['examination_cornea'])
+        create_examination_slj = crud_examination_slj.examinationslj.createExaminationSlj(db=db, base_info_id=id, data=examination['examination_slj'])
+        create_examination_eyeballsport = crud_examination_eyeballsport.examinationeyeballsport.createExaminationEyeballsport(db=db, base_info_id=id, data=examination['examination_eyeballsport'])
+        create_examination_control = crud_examination_control.examinationcontrol.createExaminationControl(db=db, base_info_id=id, data=examination['examination_control'])
 
-        crud_leave_hospital_lts.leavehospitallts.createLeaveHospitalLts(db=db, base_info_id=id, data=leave_history['leave_hospital_lts'])
-        crud_leave_hospital_slj.leavehospitalslj.createLeaveHospitalSlj(db=db, base_info_id=id, data=leave_history['leave_hospital_slj'])
-        crud_leave_hospital_cornea.leavehospitalcornea.createLeaveHospitalCornea(db=db, base_info_id=id, data=leave_history['leave_hospital_cornea'])
-        crud_leave_hospital_eyeballsport.leavehospitaleyeballsport.createLeaveHospitalEyeballsport(db=db, base_info_id=id, data=leave_history['leave_hospital_eyeballsport'])
+        create_leave_hospital_lts = crud_leave_hospital_lts.leavehospitallts.createLeaveHospitalLts(db=db, base_info_id=id, data=leave_history['leave_hospital_lts'])
+        create_leave_hospital_slj = crud_leave_hospital_slj.leavehospitalslj.createLeaveHospitalSlj(db=db, base_info_id=id, data=leave_history['leave_hospital_slj'])
+        create_leave_hospital_cornea = crud_leave_hospital_cornea.leavehospitalcornea.createLeaveHospitalCornea(db=db, base_info_id=id, data=leave_history['leave_hospital_cornea'])
+        create_leave_hospital_eyeballsport = crud_leave_hospital_eyeballsport.leavehospitaleyeballsport.createLeaveHospitalEyeballsport(db=db, base_info_id=id, data=leave_history['leave_hospital_eyeballsport'])
 
-        crud_diagnosis.diagnosis.createDiagnosis(db=db, base_info_id=id, data=diagnosis)
-        crud_surgery.surgery.createSurgery(db=db, base_info_id=id, data=surgery)
+        create_diagnosis = crud_diagnosis.diagnosis.createDiagnosis(db=db, base_info_id=id, data=diagnosis)
+        create_surgery = crud_surgery.surgery.createSurgery(db=db, base_info_id=id, data=surgery)
+
+        db.add_all(
+            [
+                create_case,
+                create_medical_history,
+                create_examination_nv,
+                create_examination_corrected_visual,
+                create_examination_tsj,
+                create_examination_lts,
+                create_examination_slj,
+                create_examination_control,
+                create_leave_hospital_lts,
+                create_leave_hospital_slj,
+                create_leave_hospital_cornea,
+                create_diagnosis,
+                create_surgery,
+                create_examination_co[0],
+                create_examination_co[1],
+                create_examination_ro[0],
+                create_examination_ro[1],
+                create_examination_cornea[0],
+                create_examination_cornea[1],
+                create_examination_eyeballsport[0],
+                create_examination_eyeballsport[1],
+                create_leave_hospital_eyeballsport[0],
+                create_leave_hospital_eyeballsport[1]
+            ]
+        )
+        db.commit()
+        db.close()
     except Exception as e:
         print(e)
         raise HTTPException(
@@ -361,6 +391,9 @@ def update_case_detail(
 
         crud_diagnosis.diagnosis.updateDiagnosis(db=db, id=id, data=diagnosis)
         crud_surgery.surgery.updateSurgery(db=db, id=id, data=surgery)
+
+        db.commit()
+        db.close()
     except Exception as e:
         print(e)
         raise HTTPException(

@@ -26,17 +26,14 @@ class CRUDDiagnosis(CRUDBase[None, Diagnosis, None]):
             diagnosis_id=diagnosis_id,
             **data
         )
-        db.add(db_obj)
-        db.commit()
-        db.close()
+
         return db_obj
 
     def updateDiagnosis(self, db: Session, id: str, data: dict) -> Any:
         """修改诊断"""
         data = jsonable_encoder(data)
         db.query(Diagnosis).filter(Diagnosis.base_info_id == id).update(data)
-        db.commit()
-        db.close()
+
         return None
 
 diagnosis = CRUDDiagnosis(Diagnosis)

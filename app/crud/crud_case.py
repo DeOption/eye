@@ -69,9 +69,7 @@ class CRUDCase(CRUDBase[None, BaseInfo, None]):
             modify_time=time,
             **data
         )
-        db.add(db_obj)
-        db.commit()
-        db.close()
+
         return db_obj
 
     def getCaseCondition(
@@ -295,9 +293,10 @@ class CRUDCase(CRUDBase[None, BaseInfo, None]):
     def updateBaseInfoDetails(self, db: Session, id: str, data: dict) -> Any:
         """修改病例详情"""
         data = jsonable_encoder(data)
+        time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data["modify_time"] = time
         db.query(BaseInfo).filter(BaseInfo.id == id).update(data)
-        db.commit()
-        db.close()
+
         return None
 
 
