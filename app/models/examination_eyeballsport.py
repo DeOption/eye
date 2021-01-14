@@ -13,7 +13,7 @@ class ExaminationEyeballsport(Base):
     normal = Column(Boolean, nullable=False, comment="正常")
     external_rectus = Column(VARCHAR(20), nullable=False, comment="	外直肌")
     internal_rectus = Column(VARCHAR(20), nullable=False, comment="	内直肌")
-    pper_rectus = Column(VARCHAR(20), nullable=False, comment="上直肌")
+    upper_rectus = Column(VARCHAR(20), nullable=False, comment="上直肌")
     lower_rectus = Column(VARCHAR(20), nullable=False, comment="下直肌")
     upper_oblique = Column(VARCHAR(20), nullable=False, comment="上斜肌")
     lower_oblique = Column(VARCHAR(20), nullable=False, comment="下斜肌")
