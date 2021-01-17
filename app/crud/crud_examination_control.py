@@ -24,7 +24,7 @@ class CRUDExaminationControl(CRUDBase[None, ExaminationControl, None]):
         db_obj = ExaminationControl(
             base_info_id=base_info_id,
             examination_control_id=examination_control_id,
-            examination_Control=data
+            **data
         )
 
         return db_obj
@@ -33,7 +33,7 @@ class CRUDExaminationControl(CRUDBase[None, ExaminationControl, None]):
         """修改控制力"""
         data = jsonable_encoder(data)
         print(data)
-        db.query(ExaminationControl).filter(ExaminationControl.base_info_id == id).update({"examination_Control": data})
+        db.query(ExaminationControl).filter(ExaminationControl.base_info_id == id).update(data)
 
         return None
 
